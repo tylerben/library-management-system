@@ -1,2 +1,2 @@
-# treehouse-project-10
+# Treehouse Project 10
 Treehouse Library Manager
