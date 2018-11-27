@@ -3,34 +3,48 @@ extends layout
 block content
   //- h1= title
   //- p Welcome to #{title}
-  h1 Library Manager
   p Welcome to Library Manager
-  ul
-    li Books
-      ul
-        li
+  div.container
+    div.flex-row
+      div.featured-content
+        p 
+          i.material-icons library_books 
+          | Manage Books
+        p.description Use these tools to manage library books.
+      ul.featured-tools
+        li.featured-tool
           a(href="/books/new") New Book
-        li
+        li.featured-tool
           a(href="all_books.html") List All
-        li
+        li.featured-tool
           a(href="/books?filter=overdue") List Overdue
-        li
+        li.featured-tool
           a(href="/books?filter=checked_out") List Checked Out
-          
-    li Patrons
-      ul
-        li
+    
+    div.flex-row    
+      div.featured-content
+        p 
+          i.material-icons account_circle 
+          | Manage Patrons
+        p.description Use these tools to manage library patrons.
+      ul.featured-tools      
+        li.featured-tool
           a(href="/patrons/new") New Patron
-        li
+        li.featured-tool
           a(href="all_patrons.html") List All
-          
-    li Loans
-      ul
-        li
+    
+    div.flex-row    
+      div.featured-content
+        p 
+          i.material-icons account_balance 
+          | Manage Loans
+        p.description Use these tools to manage library loans.
+      ul.featured-tools
+        li.featured-tool
           a(href="new_loan.html") New Loan
-        li
+        li.featured-tool
           a(href="all_loans.html") List All
-        li
+        li.featured-tool
           a(href="overdue_loans.html") List Overdue
-        li
+        li.featured-tool
           a(href="checked_loans.html") List Checked Out

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www -e js,jade"
+    "start": "nodemon ./bin/www -e js,pug"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",

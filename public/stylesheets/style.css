@@ -1,15 +1,27 @@
+@import url('https://fonts.googleapis.com/css?family=Fugaz+One|Noto+Sans+TC:300,400,500,700');
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   padding: 50px;
-  font: 18px "Garamond", serif;
+  margin: 0;
+  font-size: 18px;
+  font-family: 'Noto Sans TC', sans-serif;
+  background-color: #FAFAFA;
+  /* background-color: #F1F1F1; */
 }
+
 a {
-  color: #019875;
+  color: #252526;
   text-decoration: none;
-  font-weight: bold;
 }
+
   a:hover {
     color: black;
   }
+
 a.button, input[type=submit] {
   color: white;
   background: #019875;
@@ -19,69 +31,117 @@ a.button, input[type=submit] {
   border-radius: 2px;
   cursor: pointer;
 }
+
 form a.button, input[type=submit] {
   margin-left: 140px;
 }
+
 input[type=submit] {
   border: 0;
 }
+
   a.button:hover, input[type=submit]:hover {
     background-color: #01b189;
   }
+
 p {
   margin: 20px auto;
 }
+
 ul {
   padding: 0;
   list-style-type: none;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   line-height: 1.3em;
 }
+
 nav {
-  border-bottom: 2px solid #D8B493;
+  /* border-bottom: 1px solid #7ae7ff; */
+  border-bottom: 1px solid #DDD;
+  background-color: #FAFAFA;
+  /* background-color: #FFF; */
+  padding: 15px;
+  margin-bottom: 0;
+  /* box-shadow: 0 2px 4px -2px rgba(55,55,55,.2), 0 4px 5px 0 rgba(55,55,55,.14), 0 1px 10px 0 rgba(55,55,55,.12); */
+  position: relative;
+  z-index: 1000;
 }
-nav ul li {
+
+nav ul {
+  float: left;
+}
+
+nav h1 {
+  float: right;
+  font-family: 'Fugaz One', cursive;
+  font-size: 2em;
+  margin-bottom: 15px;
+  color: #5d86ff;
+  /* background: linear-gradient(45deg, #00C9FF 0%, #94e69d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; */
+  /* color: #43a047; */
+}
+
+nav:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+nav ul li a {
   display: inline-block;
   list-style: none;
-  padding-left: 7px;
+  padding: 5px 15px;
+  color: #252526;
+  font-weight: 400;
 }
-  nav ul li:after {
-    content: " | ";
-  }
-  nav ul li:last-child:after {
-    content: none;
-  }
+
+nav ul li a i {
+  vertical-align: middle;
+  margin-right: 8px;
+  color: #5d86ff;
+}
+
 h2 {
-  border-top: 2px solid #e7e7e7;
-  padding-top: 20px;
+  /* border-top: 2px solid #e7e7e7; */
+  /* padding-top: 20px; */
 }
+
 th {
   border-bottom: 2px solid #D8B493;
   text-align: left;
   padding: 5px 20px 5px 10px;
 }
+
 tr {
   min-height: 50px;
 }
+
 tr .button {
   background-color: #4b6a88;
   padding: 4px 8px 5px;
   font-weight: normal;
 }
+
   tr .button:hover {
     background-color: #547798;
   }
+
 tr:nth-child(2n) {
   background: #E7E7E7;
 }
+
 td {
   padding: 5px 20px 5px 10px;
 }
+
 label {
   font-weight: bold;
   min-width: 130px;
   display: inline-block;
 }
+
 input {
   padding: 10px;
   font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -89,6 +149,80 @@ input {
   border-radius: 2px;
   border-color: #E7E7E7;
 }
+
 input[type=text], select {
   margin-left: 10px;
+}
+
+i {
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: 45px 0;
+  padding: 25px;
+  background-color: #E9E9E9;
+  border-radius: 4px;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin: 15px 0;
+}
+
+.featured-content {
+  background-color: #5d86ff;
+  width: 15%;
+  min-height: 250px;
+  margin: 0 auto;
+  padding: 15px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px -2px rgba(55,55,55,.2), 0 4px 5px 0 rgba(55,55,55,.14), 0 1px 10px 0 rgba(55,55,55,.12);
+}
+
+.featured-content p {
+  color: #FFF;
+  font-size: 0.9em;
+}
+
+.description {
+  font-size: 0.8em;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+.featured-tools {
+  width: 85%;
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 15px;
+}
+
+.featured-tools li.featured-tool {
+  background-color: #FAFAFA;
+  border: 1px solid #DDD;
+  min-width: 23.5%;
+  margin: 0 8px;
+  padding: 15px;
+  vertical-align: top;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px -2px rgba(55,55,55,.2), 0 4px 5px 0 rgba(55,55,55,.14), 0 1px 10px 0 rgba(55,55,55,.12);
+}
+
+.featured-tool h2 {
+  /* text-align: center; */
+  color: #da2e85;
+  font-size: 1.2em;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #DDD;
+}
+
+.featured-tool h2 i {
+  font-size: 1.2em;
 }
