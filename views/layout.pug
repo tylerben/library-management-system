@@ -10,15 +10,16 @@ html
   nav
     ul
       li
-        a(href="/all_books")
+        a(href="/books")
           i.material-icons library_books
           | Books
         a(href="/all_patrons") 
-          i.material-icons account_circle
+          i.material-icons people_outline
           | Patrons
         a(href="/all_loans")
           i.material-icons account_balance
           | Loans
-    h1 Library Manager
+    h1 
+      a(href="/") Library Manager
   body
     block content

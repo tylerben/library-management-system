@@ -1,16 +1,23 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const patrons = sequelize.define('patrons', {
-    id: DataTypes.INTEGER,
+  const Patron = sequelize.define('Patron', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true
+    },
     first_name: DataTypes.STRING,
     last_name: DataTypes.STRING,
     address: DataTypes.STRING,
     email: DataTypes.STRING,
     library_id: DataTypes.STRING,
     zip_code: DataTypes.INTEGER
-  }, {});
-  patrons.associate = function(models) {
+  }, {
+    timestamps: false,
+  });
+  Patron.associate = (models) => {
     // associations can be defined here
+    Patron.hasMany(models.Loan, {
+      foreignKey: 'patron_id',
+    });
   };
-  return patrons;
+  return Patron;
 };

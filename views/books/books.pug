@@ -1,0 +1,31 @@
+extends ../layout
+
+block content
+  //- h1= title
+  //- p Welcome to #{title}
+  p View Books
+  a(class="add-new-btn btn", href="/books/new") Create new book
+  a(class="btn", href="/books") View All Books
+  a(class="btn", href="/books/overdue") View Overdue Books
+  a(class="btn", href="/books/checked-out") View Checked Out Books
+  
+  div.container
+    div.flex-row
+      div.content-wrapper
+        table.table
+          tr
+            thead
+              th Title
+              th Author
+              th Genre
+              th Year Released
+            tbody
+              each book in books 
+                tr
+                  td
+                    a(href="/books/" + book.id, class="table-link")= book.title
+                    i.material-icons.table-link-icon open_in_new
+                  td= book.author
+                  td= book.genre
+                  td= book.first_published
+      

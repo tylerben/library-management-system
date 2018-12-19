@@ -1,0 +1,58 @@
+extends ../layout
+
+block content
+  //- h1= title
+  //- p Welcome to #{title}
+  p Book: #{title}
+  div.container
+    div.flex-row
+      div.content-wrapper
+        form(action="/books/" + book.id + "?_method=PUT", method="post")
+          p
+            label(for="title") Title
+            input(id="title", type="text", name="title", placeholder="Book Title", value=book.title)
+          p
+            label(for="author") Author
+            input(id="author", type="text", name="author", placeholder="Author", value=book.author)
+          p
+            label(for="genre") Genre
+            input(id="genre", type="text", name="genre", placeholder="Genre", value=book.genre)
+          p
+            label(for="first_published") First Published
+            input(id="first_published", type="text", name="first_published", placeholder="First Published", value=book.first_published)
+          p
+            input(type="submit", value="Update Book")
+        if(errors)
+          div.errors-wrapper
+            h2.errors Ooops an error occured!
+            ul.errors
+              each error in errors
+                li
+                  =error.message
+    div.flex-row
+      if loans.length > 0
+        div.content-wrapper
+          table.table
+            thead
+              tr
+                th Book
+                th Patron 
+                th Loaned on
+                th Return by 
+                th Returned on
+                th Action
+            tbody
+              each loan in loans 
+                tr
+                  td
+                    a(href="/books/" + loan.book_id, class="table-link")= book.title
+                    i.material-icons.table-link-icon open_in_new
+                  td
+                    a(href="/patrons/" + loan.patron_id, class="table-link")= loan.Patron.first_name + ' ' + loan.Patron.last_name
+                    i.material-icons.table-link-icon open_in_new
+                  td= loan.loaned_on
+                  td= loan.return_by
+                  td= loan.returned_on
+                  td
+                    a(href="return_book.html", class="button") Return Book
+      

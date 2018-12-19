@@ -1,0 +1,31 @@
+extends ../layout
+
+block content
+  //- h1= title
+  //- p Welcome to #{title}
+  p New Book
+  div.form-container
+      div.form-content-wrapper
+        form(action="/books", method="post")
+          p
+            label(for="title") Title
+            input(id="title", type="text", name="title", placeholder="Book Title", value=book.title)
+          p
+            label(for="author") Author
+            input(id="author", type="text", name="author", placeholder="Author", value=book.author)
+          p
+            label(for="genre") Genre
+            input(id="genre", type="text", name="genre", placeholder="Genre", value=book.genre)
+          p
+            label(for="first_published") First Published
+            input(id="first_published", type="text", name="first_published", placeholder="First Published", value=book.first_published)
+          p
+            input(type="submit", value="Create New Book")
+        if(errors)
+          div.errors-wrapper
+            h2.errors Ooops an error occured!
+            ul.errors
+              each error in errors
+                li
+                  =error.message
+      

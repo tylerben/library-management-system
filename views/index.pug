@@ -12,25 +12,37 @@ block content
           | Manage Books
         p.description Use these tools to manage library books.
       ul.featured-tools
+        li.featured-tool 
+          h2 New Book
+          p Add a new book to the library
+          a(href="/books/new") Add Book
         li.featured-tool
-          a(href="/books/new") New Book
-        li.featured-tool
+          h2 View All Books
+          p View all books in the library
           a(href="all_books.html") List All
         li.featured-tool
+          h2 View Overdue
+          p View all overdue books
           a(href="/books?filter=overdue") List Overdue
         li.featured-tool
+          h2 View Checked Out
+          p View all checked out books
           a(href="/books?filter=checked_out") List Checked Out
     
     div.flex-row    
       div.featured-content
         p 
-          i.material-icons account_circle 
+          i.material-icons people_outline 
           | Manage Patrons
         p.description Use these tools to manage library patrons.
-      ul.featured-tools      
+      ul.featured-tools    
         li.featured-tool
-          a(href="/patrons/new") New Patron
+          h2 Add Patron
+          p Add a new library patron  
+          a(href="/patrons/new") Add Patron
         li.featured-tool
+          h2 View All Patrons
+          p View all library patrons
           a(href="all_patrons.html") List All
     
     div.flex-row    
@@ -41,10 +53,18 @@ block content
         p.description Use these tools to manage library loans.
       ul.featured-tools
         li.featured-tool
-          a(href="new_loan.html") New Loan
+          h2 New Loan
+          p Add a new library loan  
+          a(href="new_loan.html") Add Loan
         li.featured-tool
+          h2 View Current Loans
+          p View all loan 
           a(href="all_loans.html") List All
         li.featured-tool
+          h2 View Overdue
+          p View all overdue loans 
           a(href="overdue_loans.html") List Overdue
         li.featured-tool
+          h2 View Checked Out
+          p View books currently on loan  
           a(href="checked_loans.html") List Checked Out
