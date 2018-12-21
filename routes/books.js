@@ -26,7 +26,7 @@ router.get('/overdue', (req, res) => {
       where: {
         returned_on: null,
         return_by: {
-          [Op.gte]: util.getToday(),
+          [Op.lt]: util.getToday(),
         }
       },
     }],

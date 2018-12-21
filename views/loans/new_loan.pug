@@ -1,0 +1,35 @@
+extends ../layout
+
+block content
+  //- h1= title
+  //- p Welcome to #{title}
+  p New Loan
+  div.form-container
+      div.form-content-wrapper
+        form(action="/loans", method="post")
+          p
+            label(for="book_id") Book
+            select(id="book_id", type="text", name="book_id", value=loan.book_id, required="required")
+              each book in books
+                option(value=book.id)= book.title 
+          p
+            label(for="patron_id") Patron
+            select(id="patron_id", type="text", name="patron_id", value=loan.patron_id, required="required")
+              each patron in patrons
+                option(value=patron.id)= patron.first_name + ' ' + patron.last_name 
+          p
+            label(for="loaned_on") Loaned On
+            input(id="loaned_on", type="date", name="loaned_on", value=loan.loaned_on, required="required")
+          p
+            label(for="return_by") Return By
+            input(id="return_by", type="date", name="return_by", value=loan.return_by)
+          p
+            input(type="submit", value="Create New Loan")
+        if(errors)
+          div.errors-wrapper
+            h2.errors Ooops an error occured!
+            ul.errors
+              each error in errors
+                li
+                  =error.message
+      

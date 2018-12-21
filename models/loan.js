@@ -4,11 +4,31 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       primaryKey: true,
     },
-    book_id: DataTypes.INTEGER,
-    patron_id: DataTypes.INTEGER,
-    loaned_on: DataTypes.DATE,
-    return_by: DataTypes.DATE,
-    returned_on: DataTypes.DATE,
+    book_id: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: { msg: 'A book is required'}
+      },
+    },
+    patron_id: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: { msg: 'A patron is required' },
+      },
+    },
+    loaned_on: {
+      type: DataTypes.DATEONLY,
+      validate: {
+        notEmpty: { msg: 'A loan start date is required' },
+      },
+    },
+    return_by: {
+      type: DataTypes.DATEONLY,
+      validate: {
+        notEmpty: { msg: 'A return date is required' },
+      },
+    },
+    returned_on: DataTypes.DATEONLY,
   }, {
     timestamps: false,
   });

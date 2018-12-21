@@ -30,7 +30,6 @@ block content
                 li
                   =error.message
     div.flex-row
-      if loans.length > 0
         div.content-wrapper
           table.table
             thead
@@ -42,17 +41,22 @@ block content
                 th Returned on
                 th Action
             tbody
-              each loan in loans 
+              if loans.length > 0
+                each loan in loans 
+                  tr
+                    td
+                      a(href="/books/" + loan.book_id, class="table-link")= book.title
+                      i.material-icons.table-link-icon open_in_new
+                    td
+                      a(href="/patrons/" + loan.patron_id, class="table-link")= loan.Patron.first_name + ' ' + loan.Patron.last_name
+                      i.material-icons.table-link-icon open_in_new
+                    td= loan.loaned_on
+                    td= loan.return_by
+                    td= loan.returned_on
+                    td
+                      if !loan.returned_on
+                        a(href="return_book.html", class="button") Return Book
+              else
                 tr
-                  td
-                    a(href="/books/" + loan.book_id, class="table-link")= book.title
-                    i.material-icons.table-link-icon open_in_new
-                  td
-                    a(href="/patrons/" + loan.patron_id, class="table-link")= loan.Patron.first_name + ' ' + loan.Patron.last_name
-                    i.material-icons.table-link-icon open_in_new
-                  td= loan.loaned_on
-                  td= loan.return_by
-                  td= loan.returned_on
-                  td
-                    a(href="return_book.html", class="button") Return Book
+                  td(colspan="6", class="text-center") This book has never been checked out
       

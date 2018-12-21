@@ -1,0 +1,37 @@
+extends ../layout
+
+block content
+  //- h1= title
+  //- p Welcome to #{title}
+  p New Patron
+  div.form-container
+      div.form-content-wrapper
+        form(action="/patrons", method="post")
+          p
+            label(for="first_name") First Name
+            input(id="first_name", type="text", name="first_name", placeholder="First Name", value=patron.first_name)
+          p
+            label(for="last_name") Last Name
+            input(id="last_name", type="text", name="last_name", placeholder="Last Name", value=patron.last_name)
+          p
+            label(for="address") Address
+            input(id="address", type="text", name="address", placeholder="Address", value=patron.address)
+          p
+            label(for="email") Email
+            input(id="email", type="text", name="email", placeholder="First Published", value=patron.email)
+          p
+            label(for="library_id") Library Id
+            input(id="library_id", type="text", name="library_id", placeholder="Library Id", value=patron.library_id)
+          p
+            label(for="zip_code") Zip Code
+            input(id="zip_code", type="text", name="zip_code", placeholder="Zip Code", value=patron.zip_code)
+          p
+            input(type="submit", value="Create New Patron")
+        if(errors)
+          div.errors-wrapper
+            h2.errors Ooops an error occured!
+            ul.errors
+              each error in errors
+                li
+                  =error.message
+      

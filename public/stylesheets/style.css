@@ -143,6 +143,7 @@ label {
   color: #5d86ff;
 }
 
+select,
 input {
   padding: 10px;
   font-size: 14px;
@@ -151,7 +152,7 @@ input {
   border-bottom: 1.5px solid #5d86ff;
 }
 
-input[type=text], select {
+input[type=text] {
   margin-left: 10px;
 }
 
@@ -159,6 +160,8 @@ i {
   vertical-align: middle;
   margin-right: 5px;
 }
+
+.text-center {text-align: center; }
 
 .container {
   display: flex;

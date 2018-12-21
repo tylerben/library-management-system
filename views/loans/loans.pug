@@ -1,0 +1,39 @@
+extends ../layout
+
+block content
+  //- h1= title
+  //- p Welcome to #{title}
+  p View Loans
+  a(class="add-new-btn btn", href="/loans/new") Create new loan
+  a(class="btn", href="/loans") View All Loans
+  a(class="btn", href="/loans/overdue") View Overdue Loans
+  a(class="btn", href="/loans/checked-out") View Checked Out Loans
+  
+  div.container
+    div.flex-row
+      div.content-wrapper
+        table.table
+          tr
+            thead
+              th Book Title
+              th Patron
+              th Loaned on
+              th Return by
+              th Returned on
+              th Action
+            tbody
+              each loan in loans 
+                tr
+                  td
+                    a(href="/books/" + loan.Book.id, class="table-link")= loan.Book.title
+                    i.material-icons.table-link-icon open_in_new
+                  td
+                      a(href="/patrons/" + loan.patron_id, class="table-link")= loan.Patron.first_name + ' ' + loan.Patron.last_name
+                      i.material-icons.table-link-icon open_in_new
+                  td= loan.loaned_on
+                    td= loan.return_by
+                    td= loan.returned_on
+                    td
+                      if !loan.returned_on
+                        a(href="return_book.html", class="button") Return Book
+      
