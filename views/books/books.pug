@@ -1,17 +1,20 @@
 extends ../layout
 
 block content
-  //- h1= title
-  //- p Welcome to #{title}
-  p View Books
-  a(class="add-new-btn btn", href="/books/new") Create new book
-  a(class="btn", href="/books") View All Books
-  a(class="btn", href="/books/overdue") View Overdue Books
-  a(class="btn", href="/books/checked-out") View Checked Out Books
+  h2.page-title #{title}
+  div.page-navigation
+    a(class="add-new-btn btn", href="/books/new") Create new book
+    a(class="btn", href="/books/p/1") View All Books
+    a(class="btn", href="/books/overdue/p/1") View Overdue Books
+    a(class="btn", href="/books/checked-out/p/1") View Checked Out Books
   
   div.container
     div.flex-row
       div.content-wrapper
+        form(action="/books/search", method="post", class="search-form margin-bottom")
+          input(type="text", placeholder="Search", id="search_term" name="search_term" class="search-input margin-right")
+          input(type="submit", value="Search", class="search-submit margin-left")
+            
         table.table
           tr
             thead
@@ -28,4 +31,14 @@ block content
                   td= book.author
                   td= book.genre
                   td= book.first_published
+        if totalPages > 2 && pagination
+          ul.pagination-links.margin-bottom
+            - var n = 1;
+            while n < totalPages
+              if n === activePage 
+                li.pagination-link.active
+                  a(href="/books/p/" + n)= n++
+              else
+                li.pagination-link
+                  a(href="/books/p/" + n)= n++
       

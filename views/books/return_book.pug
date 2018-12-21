@@ -1,0 +1,38 @@
+extends ../layout
+
+block content
+  //- h1= title
+  //- p Welcome to #{title}
+  h2.page-title #{title}
+  div.container
+    div.flex-row
+      div.content-wrapper
+        h3.section-title.padding-left.margin-top Return Book Details
+        div.padding-left
+            p
+                label Book Title: 
+                div #{loan.Book.title}
+            p
+                label Loaned By: 
+                div #{loan.Patron.first_name} #{loan.Patron.last_name}
+            p
+                label Loaned On: 
+                div #{loan.loaned_on}
+            p
+                label Return By:  
+                div #{loan.return_by}
+
+        form(action="/books/" + loan.id + "/return?_method=PUT", method="post", class="padding-left")
+            p
+                label(for="returned_on") Returned on:
+                input(id="returned_on", type="date", name="returned_on" value=loan.returned_on)
+            p
+                input(type="submit", value="Return Book")
+
+        if(errors)
+          div.errors-wrapper
+            h2.errors Ooops an error occured!
+            ul.errors
+              each error in errors
+                li
+                  =error.message  

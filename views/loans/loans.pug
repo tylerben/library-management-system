@@ -3,11 +3,12 @@ extends ../layout
 block content
   //- h1= title
   //- p Welcome to #{title}
-  p View Loans
-  a(class="add-new-btn btn", href="/loans/new") Create new loan
-  a(class="btn", href="/loans") View All Loans
-  a(class="btn", href="/loans/overdue") View Overdue Loans
-  a(class="btn", href="/loans/checked-out") View Checked Out Loans
+  h2.page-title #{title}
+  div.page-navigation
+    a(class="add-new-btn btn", href="/loans/new") Create new loan
+    a(class="btn", href="/loans") View All Loans
+    a(class="btn", href="/loans/overdue") View Overdue Loans
+    a(class="btn", href="/loans/checked-out") View Checked Out Loans
   
   div.container
     div.flex-row
@@ -35,5 +36,5 @@ block content
                     td= loan.returned_on
                     td
                       if !loan.returned_on
-                        a(href="return_book.html", class="button") Return Book
+                        a(href="/books/" + loan.id + "/return", class="button") Return Book
       

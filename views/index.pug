@@ -3,7 +3,7 @@ extends layout
 block content
   //- h1= title
   //- p Welcome to #{title}
-  p Welcome to Library Manager
+  h2.page-title Welcome to Library Manager
   div.container
     div.flex-row
       div.featured-content
@@ -19,15 +19,15 @@ block content
         li.featured-tool
           h2 View All Books
           p View all books in the library
-          a(href="all_books.html") List All
+          a(href="/books/p/1") List All
         li.featured-tool
           h2 View Overdue
           p View all overdue books
-          a(href="/books?filter=overdue") List Overdue
+          a(href="/books/overdue/p/1") List Overdue
         li.featured-tool
           h2 View Checked Out
           p View all checked out books
-          a(href="/books?filter=checked_out") List Checked Out
+          a(href="/books/checked-out/p/1") List Checked Out
     
     div.flex-row    
       div.featured-content
@@ -43,7 +43,7 @@ block content
         li.featured-tool
           h2 View All Patrons
           p View all library patrons
-          a(href="all_patrons.html") List All
+          a(href="/patrons/p/1") List All
     
     div.flex-row    
       div.featured-content
@@ -55,16 +55,16 @@ block content
         li.featured-tool
           h2 New Loan
           p Add a new library loan  
-          a(href="new_loan.html") Add Loan
+          a(href="/loans/new") Add Loan
         li.featured-tool
           h2 View Current Loans
           p View all loan 
-          a(href="all_loans.html") List All
+          a(href="/loans") List All
         li.featured-tool
           h2 View Overdue
           p View all overdue loans 
-          a(href="overdue_loans.html") List Overdue
+          a(href="/loans/overdue") List Overdue
         li.featured-tool
           h2 View Checked Out
           p View books currently on loan  
-          a(href="checked_loans.html") List Checked Out
+          a(href="loans/checked-out") List Checked Out

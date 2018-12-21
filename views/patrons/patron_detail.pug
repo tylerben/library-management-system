@@ -1,0 +1,70 @@
+extends ../layout
+
+block content
+  //- h1= title
+  //- p Welcome to #{title}
+  h2.page-title Patron: #{title}
+  div.container
+    div.flex-row
+      div.content-wrapper
+        h3.section-title.padding-left.margin-top Edit Patron Details
+        form(action="/patrons/" + patron.id + "?_method=PUT", method="post", class="padding-left margin-top")
+          p
+            label(for="first_name") First Name
+            input(id="first_name", type="text", name="first_name", placeholder="First Name", value=patron.first_name)
+          p
+            label(for="last_name") Last Name
+            input(id="last_name", type="text", name="last_name", placeholder="Last Name", value=patron.last_name)
+          p
+            label(for="address") Address
+            input(id="address", type="text", name="address", placeholder="Address", value=patron.address)
+          p
+            label(for="email") Email
+            input(id="email", type="text", name="email", placeholder="First Published", value=patron.email)
+          p
+            label(for="library_id") Library Id
+            input(id="library_id", type="text", name="library_id", placeholder="Library Id", value=patron.library_id)
+          p
+            label(for="zip_code") Zip Code
+            input(id="zip_code", type="text", name="zip_code", placeholder="Zip Code", value=patron.zip_code)
+          p
+            input(type="submit", value="Update Patron")
+        if(errors)
+          div.errors-wrapper
+            h2.errors Ooops an error occured!
+            ul.errors
+              each error in errors
+                li
+                  =error.message
+    div.flex-row
+        div.content-wrapper
+          h3.section-title.padding-left.margin-top Current Loans
+          table.table.margin-left.margin-top
+            thead
+              tr
+                th Book
+                th Patron 
+                th Loaned on
+                th Return by 
+                th Returned on
+                th Action
+            tbody
+              if loans.length > 0
+                each loan in loans 
+                  tr
+                    td
+                      a(href="/books/" + loan.book_id, class="table-link")= loan.Book.title
+                      i.material-icons.table-link-icon open_in_new
+                    td
+                      a(href="/patrons/" + loan.patron_id, class="table-link")= loan.Patron.first_name + ' ' + loan.Patron.last_name
+                      i.material-icons.table-link-icon open_in_new
+                    td= loan.loaned_on
+                    td= loan.return_by
+                    td= loan.returned_on
+                    td
+                      if !loan.returned_on
+                        a(href="/books/" + loan.id + "/return", class="button") Return Book
+              else
+                tr
+                  td(colspan="6", class="text-center") This patron has no loan history.
+      

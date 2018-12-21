@@ -9,10 +9,19 @@ const Patron = require('../models').Patron;
 const router = express.Router();
 
 /* GET Patrons home page. */
-router.get('/', (req, res) => {
+router.get('/p/:page', (req, res) => {
+  const page = parseInt(req.params.page);
+  const offset = (page * 10) - 10;
   Patron.findAll()
     .then((patrons) => {
-      res.render('patrons/patrons', { patrons, title: 'Library Manager | View Patrons'})
+      const totalPages = Math.ceil(patrons.length/10)+1;
+      res.render('patrons/patrons', { 
+        patrons: patrons.splice(offset, 10),
+        totalPages,
+        activePage: page,
+        pagination: true,
+        title: 'View Patrons',
+      });
     })
     .catch((err) => {
       res.send(500);
@@ -20,11 +29,49 @@ router.get('/', (req, res) => {
   });
 });
 
+/* GET patrons search page. */
+router.post('/search', (req, res) => {
+  const searchTerm = req.body.search_term.toLowerCase();
+  Patron.findAll({
+    where: {
+      [Op.or]: [
+        {
+          first_name: { [Op.like]: `%${searchTerm}%` },
+        },
+        {
+          last_name: { [Op.like]: `%${searchTerm}%` },
+        },
+        {
+          address: { [Op.like]: `%${searchTerm}%` },
+        },
+        {
+          email: { [Op.like]: `%${searchTerm}%` },
+        },
+        {
+          library_id: { [Op.like]: `%${searchTerm}%` },
+        },
+        {
+          zip_code: { [Op.like]: `%${searchTerm}%` },
+        },
+      ],
+    },
+  }).then((patrons) => {
+    res.render('patrons/patrons', {
+      patrons,
+      pagination: false,
+      title: 'View Patrons',
+    });
+  }).catch((err) => {
+    res.send(500);
+    throw err;
+  });
+});
+
 /* GET add new patron page. */
 router.get('/new', (req, res) => {
   Patron.findAll()
     .then((patrons) => {
-      res.render('patrons/new_patron', { patron: Patron.build(), title: 'Library Manager | New Patron' });
+      res.render('patrons/new_patron', { patron: Patron.build(), title: 'New Patron' });
     })
     .catch((err) => {
       res.send(500);
@@ -42,7 +89,7 @@ router.post('/', (req, res) => {
         .then((patrons) => {
           res.render('patrons/new_patron', { 
             patron: Patron.build(req.body), 
-            title: 'Library Manager | New Patron',
+            title: 'New Patron',
             errors: err.errors 
           });
         })
@@ -59,58 +106,78 @@ router.post('/', (req, res) => {
   });
 });
 
-// /* GET individual book aka book details page. */
-// router.get('/:id', (req, res) => {
+/* GET individual patron aka patron details page. */
+router.get('/:id', (req, res) => {
+  const loansRequest = Loan.findAll({
+    where: { patron_id: req.params.id },
+    include: [
+      { model: Patron },
+      { model: Book },
+    ],
+  });
+  const patronRequest = Patron.findByPk(req.params.id);
 
-//   const loansRequest = Loan.findAll({
-//     where: { book_id: req.params.id },
-//     include: [{
-//       model: Patron
-//     }],
-//   });
+  Promise.all([loansRequest, patronRequest])
+    .then((results) => {
+      if (results) {        
+        const loans = results[0];
+        const patron = results[1];        
+        res.render('patrons/patron_detail', { patron, title: `${patron.first_name} ${patron.last_name}`, loans });
+      } else {
+        res.send(404);
+      }
+    })
+    .catch((err) => {
+      res.send(500);
+      throw err;
+    });
+});
 
-//   const bookRequest = Book.findByPk(req.params.id);
-
-//   Promise.all([loansRequest, bookRequest])
-//     .then((results) => {
-//       if (results) {        
-//         const loans = results[0];
-//         const book = results[1];        
-//         res.render('books/book_detail', { book, title: book.title, loans });
-//       } else {
-//         res.send(404);
-//       }
-//     })
-//     .catch((err) => {
-//       res.send(500);
-//       throw err;
-//     });
-// });
-
-// /* PUT update article. */
-// router.put('/:id', (req, res, next) => {
-//   Book.findByPk(req.params.id).then((book) => {
-//     if (book) {
-//       return book.update(req.body);
-//     }
-//     res.send(404);
-//   }).then((book) => {
-//     res.redirect('/books');
-//   }).catch((err) => {
-//     if (err.name === 'SequelizeValidationError') {
-//       const book = Book.build(req.body);
-//       book.id = req.params.id;      
-//       res.render('books/book_detail', {
-//         book, 
-//         title: book.title,
-//         errors: err.errors,
-//       });
-//     } else {
-//       throw err;
-//     }
-//   }).catch((err) => {
-//     res.send(500);
-//   });   
-// });
+/* PUT update patron. */
+router.put('/:id', (req, res, next) => {
+  Patron.findByPk(req.params.id).then((patron) => {
+    if (patron) {
+      return patron.update(req.body);
+    }
+    res.send(404);
+  }).then((patron) => {
+    res.redirect('/patrons');
+  }).catch((err) => {
+    if (err.name === 'SequelizeValidationError') {
+      const loansRequest = Loan.findAll({
+        where: { patron_id: req.params.id },
+        include: [
+          { model: Patron },
+          { model: Book },
+        ],
+      });
+      const patronRequest = Patron.findByPk(req.params.id);
+      Promise.all([loansRequest, patronRequest])
+        .then((results) => {
+          if (results) {        
+            const loans = results[0];
+            const patron = Patron.build(req.body);
+            patron.id = req.params.id;         
+            res.render('patrons/patron_detail', { 
+              patron, 
+              title: `${patron.first_name} ${patron.last_name}`, 
+              loans,
+              errors: err.errors,
+            });
+          } else {
+            res.send(404);
+          }
+        })
+        .catch((err) => {
+          res.send(500);
+          throw err;
+        });
+    } else {
+      throw err;
+    }
+  }).catch((err) => {
+    res.send(500);
+  });   
+});
 
 module.exports = router;

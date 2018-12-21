@@ -1,11 +1,10 @@
 extends ../layout
 
 block content
-  //- h1= title
   //- p Welcome to #{title}
-  p New Book
-  div.form-container
-      div.form-content-wrapper
+  h2.page-title #{title}
+  div.container      
+      div.content-wrapper
         form(action="/books", method="post")
           p
             label(for="title") Title

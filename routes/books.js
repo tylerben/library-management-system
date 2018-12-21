@@ -9,9 +9,18 @@ const Patron = require('../models').Patron;
 const router = express.Router();
 
 /* GET books home page. */
-router.get('/', (req, res) => {
+router.get('/p/:page', (req, res) => {
+  const page = parseInt(req.params.page);
+  const offset = (page * 10) - 10;
   Book.findAll().then((books) => {
-    res.render('books/books', { books, title: 'Library Manager | View Books' });
+    const totalPages = Math.ceil(books.length/10)+1;
+    res.render('books/books', {
+      books: books.splice(offset, 10),
+      totalPages,
+      activePage: page,
+      pagination: true,
+      title: 'View Books',
+    });
   }).catch((err) => {
     res.send(500);
     throw err;
@@ -19,7 +28,9 @@ router.get('/', (req, res) => {
 });
 
 /* GET books overdue page. */
-router.get('/overdue', (req, res) => {
+router.get('/overdue/p/:page', (req, res) => {
+  const page = parseInt(req.params.page);
+  const offset = (page * 10) - 10;
   Book.findAll({
     include: [{
       model: Loan,
@@ -31,7 +42,14 @@ router.get('/overdue', (req, res) => {
       },
     }],
   }).then((books) => {
-    res.render('books/books', { books, title: 'Library Manager | View Overdue Books' });
+    const totalPages = Math.ceil(books.length/10)+1;
+    res.render('books/books', { 
+      books: books.splice(offset, 10),
+      totalPages,
+      activePage: page,
+      pagination: true,
+      title: 'View Overdue Books',
+    });
   }).catch((err) => {
     res.send(500);
     throw err;
@@ -39,7 +57,9 @@ router.get('/overdue', (req, res) => {
 });
 
 /* GET books checked out page. */
-router.get('/checked-out', (req, res) => {
+router.get('/checked-out/p/:page', (req, res) => {
+  const page = parseInt(req.params.page);
+  const offset = (page * 10) - 10;
   Book.findAll({
     include: [{
       model: Loan,
@@ -48,7 +68,49 @@ router.get('/checked-out', (req, res) => {
       },
     }],
   }).then((books) => {
-    res.render('books/books', { books, title: 'Library Manager | View Overdue Books' });
+    const totalPages = Math.ceil(books.length/10)+1;
+    res.render('books/books', { 
+      books: books.splice(offset, 10),
+      totalPages,
+      activePage: page,
+      pagination: true,
+      title: 'View Checked Out Books',
+    });
+  }).catch((err) => {
+    res.send(500);
+    throw err;
+  });
+});
+
+/* GET books listing search page. */
+router.post('/search', (req, res) => {
+  const searchTerm = req.body.search_term.toLowerCase();
+  Book.findAll({
+    where: {
+      [Op.or]: [
+        {
+          title: { [Op.like]: `%${searchTerm}%` },
+        },
+        {
+          author: { [Op.like]: `%${searchTerm}%` },
+        },
+        {
+          genre: { [Op.like]: `%${searchTerm}%` },
+        },
+        {
+          first_published: { [Op.like]: `%${searchTerm}%` },
+        },
+      ],
+    },
+  }).then((books) => {
+    const totalPages = Math.ceil(books.length/10)+1;
+    res.render('books/books', {
+      books,
+      totalPages,
+      activePage: 1,
+      pagination: false,
+      title: 'View Books',
+    });
   }).catch((err) => {
     res.send(500);
     throw err;
@@ -57,7 +119,7 @@ router.get('/checked-out', (req, res) => {
 
 /* GET add new books page. */
 router.get('/new', (req, res) => {
-  res.render('books/new_book', { book: Book.build(), title: 'Library Manager | New Book' });
+  res.render('books/new_book', { book: Book.build(), title: 'New Book' });
 });
 
 /* POST create book. */
@@ -107,8 +169,8 @@ router.get('/:id', (req, res) => {
     });
 });
 
-/* PUT update article. */
-router.put('/:id', (req, res, next) => {
+/* PUT update book. */
+router.put('/:id/edit', (req, res, next) => {
   Book.findByPk(req.params.id).then((book) => {
     if (book) {
       return book.update(req.body);
@@ -131,6 +193,62 @@ router.put('/:id', (req, res, next) => {
   }).catch((err) => {
     res.send(500);
   });   
+});
+
+/* GET return books home page. */
+router.get('/:id/return', (req, res) => {
+  Loan.findByPk(req.params.id, {
+    include: [
+      { model: Book },
+      { model: Patron },
+    ],
+  }).then((loan) => {
+    loan.returned_on = util.getToday();
+    res.render('books/return_book', {
+      loan,
+      title: 'Return Book',
+    });
+  }).catch((err) => {
+    res.send(500);
+    throw err;
+  });
+});
+
+/* PUT return books home page. */
+router.put('/:id/return', (req, res) => {
+  Loan.findByPk(req.params.id).then((loan) => {
+    if (loan) {
+      return loan.update(req.body);
+    }
+    res.send(404);
+  }).then((loan) => {
+    res.redirect('/loans');
+  }).catch((err) => {
+    if (err.name === 'SequelizeValidationError') {
+      Loan.findByPk(req.params.id, {
+        include: [
+          { model: Book },
+          { model: Patron },
+        ],
+      }).then((loan) => {
+        loan.id = req.params.id;
+        loan.returned_on = req.body.returned_on;
+        res.render('books/return_book', {
+          loan,
+          title: 'Return Book',
+          errors: err.errors,
+        });
+      }).catch((err) => {
+        res.send(500);
+        throw err;
+      });
+    } else {
+      throw err;
+    }
+  }).catch((err) => {
+    res.send(500);
+    throw err;
+  });
 });
 
 module.exports = router;

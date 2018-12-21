@@ -3,9 +3,9 @@ extends ../layout
 block content
   //- h1= title
   //- p Welcome to #{title}
-  p New Patron
-  div.form-container
-      div.form-content-wrapper
+  h2.page-title #{title}
+  div.container
+      div.content-wrapper
         form(action="/patrons", method="post")
           p
             label(for="first_name") First Name

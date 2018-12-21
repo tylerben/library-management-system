@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
       },
     ],
   }).then((loans) => {
-    res.render('loans/loans', { loans, title: 'Library Manager | View Loans' });
+    res.render('loans/loans', { loans, title: 'View Loans' });
   }).catch((err) => {
     res.send(500);
     throw err;
@@ -45,7 +45,7 @@ router.get('/overdue', (req, res) => {
       },
     ],
   }).then((loans) => {
-    res.render('loans/loans', { loans, title: 'Library Manager | View Loans' });
+    res.render('loans/loans', { loans, title: 'View Overdue Loans' });
   }).catch((err) => {
     res.send(500);
     throw err;
@@ -67,7 +67,7 @@ router.get('/checked-out', (req, res) => {
       },
     ],
   }).then((loans) => {
-    res.render('loans/loans', { loans, title: 'Library Manager | View Loans' });
+    res.render('loans/loans', { loans, title: 'View Checked Out Loans' });
   }).catch((err) => {
     res.send(500);
     throw err;
@@ -91,7 +91,7 @@ router.get('/new', (req, res) => {
         books,
         patrons,
         loan,
-        title: 'Library Manager | New Loan',
+        title: 'New Loan',
       });
     });
 });
@@ -113,7 +113,7 @@ router.post('/', (req, res) => {
             books,
             patrons,
             loan,
-            title: 'Library Manager | New Loan',
+            title: 'New Loan',
             errors: err.errors,
           });
         });

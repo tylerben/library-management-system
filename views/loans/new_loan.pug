@@ -1,11 +1,9 @@
 extends ../layout
 
 block content
-  //- h1= title
-  //- p Welcome to #{title}
-  p New Loan
-  div.form-container
-      div.form-content-wrapper
+  h2.page-title #{title}
+  div.container      
+      div.content-wrapper
         form(action="/loans", method="post")
           p
             label(for="book_id") Book
